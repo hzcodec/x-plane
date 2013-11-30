@@ -1,0 +1,54 @@
+X-Plane UDP data structure
+-------------------------
+
+Understanding the format of X-Planes UDP sentences is very important.
+
+  * All data is sent as bytes
+  * Threre are 41 bytes per sentence
+  * The first 5 bytes are the message header
+    First 4 of the 5 bytes are the message type, "DATA"
+    Fifth byte is an internal-use byte
+  * The next 36 bytes are the message
+      First  4 bytes of message indicates the index number of a data
+      element, as shown in the Data Output screen in X-Plane.
+      Last 32 bytes is the data,up to 8 single-precision floating point numbers.
+
+
+Example
+-------
+
+68 65 84 65 60
+18 0 0 0
+171 103 81 191
+187 243 46 190
+103 246 45 67
+156 246 26 67
+47 231 26 67
+0 192 121 196
+0 192 121 196
+85 254 151 193
+
+Decimal values of four ASCII characters. The 5th don't care.
+68 65 84 65 60 = D,A,T,A
+
+18 0 0 0 = 18. Index number that corresponds to a specific data set in
+               X-Plane. "18: pitch, roll, headings". First byte valid
+	       others 3 will always be zero.
+
+
+171 103 81 191 ..., 151 193
+These 32 bytes make up 8 single-precision floating point numbers.
+
+
+32 bit floating point
+  * The most significant bit is the sign bit.
+  * The following 8 bits represents exponent
+  * The remaining 23 bits represents fraction
+
+     31  30         23 22                 0
+     ---------------------------------------
+     |S |   Exponent  |      Fraction      |
+     ---------------------------------------
+     <8><      8     ><       23           >
+        
+
