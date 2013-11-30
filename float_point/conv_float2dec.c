@@ -11,6 +11,7 @@
 #include <string.h>  // strcpy function
 
 char* decimal2binary(int n) {
+
     int d;
     int count = 0;
     char* pointer;
@@ -29,6 +30,7 @@ char* decimal2binary(int n) {
 
         count++;
     }
+
     *(pointer+count) = '\0';
     return pointer;
 }
@@ -53,11 +55,16 @@ int main(void) {
     }
 
     // convert decimal to binary
-    for (int i=0; i<4; i++) {
-        p_binvalue = decimal2binary(indata[i]);
-        printf("Binary string of %d is: %s\n",indata[i],p_binvalue);
+    for (int j=0; j<4; j++) {
+        p_binvalue = decimal2binary(indata[j]);
+        printf("Binary string of %d is: %s\n",indata[j],p_binvalue);
+        
+        // print out every bits
+        for (int i=0; i<8; i++) {
+            printf("Bit[%d]: %c\n",i,p_binvalue[i]);
+        }
     }
-    
+
     free(p_binvalue);
 
     return 0;
