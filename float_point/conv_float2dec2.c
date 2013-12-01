@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>  // malloc and free function
 #include <string.h>  // strcpy function
+#include <math.h>
 
 // convert input decimal integer data to binary string
 char* decimal2binary(int n) {
@@ -44,14 +45,39 @@ int bin2dec(char* data) {
     return (decimal_data - 127);
 }
 
+// convert binary string to decimal
+int bin2dec2(char* data) {
+
+    int decimal_data = (int)strtol(data,NULL,2);	
+    return decimal_data;
+}
+
+
+// calculate 1/2^n
+float power(int x) {
+
+    int p = 1;
+    float q = 0.0;
+
+    for (int i=0; i<x+1; i++) {
+	p = p * 2;
+	q = 1/(float)p;
+     }
+
+    return q;
+
+}
+
 
 /* *** MAIN *** */
 int main(void) {
 
-    char indata[4] = {163,53,128,0};
+    char  indata[4] = {163,53,128,0};
     char* p_binvalue;
-    char bin_data[32];
-    char exponent[8];
+    char  bin_data[32];
+    char  exponent[8];
+    char  mantissa[23];
+    float sum;
 
     // convert decimal to binary
     for (int i=0; i<4; i++) {
@@ -97,6 +123,30 @@ int main(void) {
 
     int x = bin2dec(exponent);
     printf("Exponent (dec): %d\n",x);
+
+
+    // find mantissa, 23 bits, and assign its variable
+    printf("Mantissa (bin): ");
+    for (int k=9; k<32; k++) {
+        printf("%c",*(bin_data+k));
+	mantissa[k-9] = *(bin_data+k);
+    }
+    printf("\n");
+
+    // make sure end of line is the last chararcter
+    exponent[23] = '\n';
+
+    int y = bin2dec2(mantissa);
+    printf("Mantissa (dec): %d\n",y);
+
+    for (int i=0; i<23; i++) {
+        if (mantissa[i] == '1') {
+	    sum += power(i);
+//	    printf("summa %f\n",sum);
+	}
+     }
+   
+    printf("sum: %.10f\n",1+sum);
 
     free(p_binvalue);
 
