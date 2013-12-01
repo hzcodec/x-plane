@@ -10,6 +10,7 @@
 #include <stdlib.h>  // malloc and free function
 #include <string.h>  // strcpy function
 
+// convert input decimal integer data to binary string
 char* decimal2binary(int n) {
 
     int d;
@@ -36,12 +37,21 @@ char* decimal2binary(int n) {
 }
 
 
+// convert binary string to decimal
+int bin2dec(char* data) {
+
+    int decimal_data = (int)strtol(data,NULL,2);	
+    return (decimal_data - 127);
+}
+
+
 /* *** MAIN *** */
 int main(void) {
 
     char indata[4] = {163,53,128,0};
     char* p_binvalue;
     char bin_data[32];
+    char exponent[8];
 
     // convert decimal to binary
     for (int i=0; i<4; i++) {
@@ -74,12 +84,19 @@ int main(void) {
         printf("Positive number\n");
     }
 
-    // find exponent, 8 bits
-    printf("Exponent: ");
+    // find exponent, 8 bits, and assign its variable
+    printf("Exponent (bin): ");
     for (int k=1; k<9; k++) {
         printf("%c",*(bin_data+k));
+	exponent[k-1] = *(bin_data+k);
     }
     printf("\n");
+
+    // make sure end of line is the last chararcter
+    exponent[8] = '\n';
+
+    int x = bin2dec(exponent);
+    printf("Exponent (dec): %d\n",x);
 
     free(p_binvalue);
 
