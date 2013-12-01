@@ -44,15 +44,16 @@ int main(void) {
     char bin_data[32];
 
     // convert decimal to binary
-    for (int j=0; j<4; j++) {
-        p_binvalue = decimal2binary(indata[j]);
-        printf("Binary string of %d is: %s\n",indata[j],p_binvalue);
+    for (int i=0; i<4; i++) {
+        p_binvalue = decimal2binary(indata[i]);
+        printf("Binary string of %d is: %s\n",indata[i],p_binvalue);
         
         // print out every bits
-        for (int i=0; i<8; i++) {
-	    bin_data[i+j*8] = p_binvalue[i];
+        for (int j=0; j<8; j++) {
+	    bin_data[j+i*8] = p_binvalue[j];
         }
     }
+    printf("\n");
 
     // make a 32 bit vector and print it out
     for (int k=0; k<32; k++) {
@@ -60,6 +61,23 @@ int main(void) {
 	if (k == 7 || k==15 || k==23) { 
             printf("\n");
         }
+    }
+    printf("\n");
+
+    // check if the number negative or positive (msb)
+    if (*(bin_data) == '1') {
+        printf("msb: %c -> ",*(bin_data));
+        printf("Negative number\n");
+    }
+    else {
+        printf("msb: %c -> ",*(bin_data));
+        printf("Positive number\n");
+    }
+
+    // find exponent, 8 bits
+    printf("Exponent: ");
+    for (int k=1; k<9; k++) {
+        printf("%c",*(bin_data+k));
     }
     printf("\n");
 

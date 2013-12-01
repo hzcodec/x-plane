@@ -3,7 +3,7 @@
     Date        : 2013-11-30
     File        : conv_float2dec.c
     Reference   : -
-    Description : Convert floating pointer value to decimal value.
+    Description : Print out binary digits from decimal value.
 */
 
 #include <stdio.h>
