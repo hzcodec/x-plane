@@ -45,6 +45,7 @@ int bin2dec(char* data) {
     return (decimal_data - 127);
 }
 
+
 // convert binary string to decimal
 int bin2dec2(char* data) {
 
@@ -65,7 +66,6 @@ float power(int x) {
      }
 
     return q;
-
 }
 
 
@@ -121,6 +121,7 @@ int main(void) {
     // make sure end of line is the last chararcter
     exponent[8] = '\n';
 
+    // convert the exponent
     int x = bin2dec(exponent);
     printf("Exponent (dec): %d\n",x);
 
@@ -142,7 +143,6 @@ int main(void) {
     for (int i=0; i<23; i++) {
         if (mantissa[i] == '1') {
 	    sum += power(i);
-//	    printf("summa %f\n",sum);
 	}
      }
    
