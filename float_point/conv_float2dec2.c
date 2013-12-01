@@ -2,8 +2,9 @@
     Auther      : Heinz Samuelsson
     Date        : 2013-11-30
     File        : conv_float2dec.c
-    Reference   : -
-    Description : Print out binary digits from decimal value.
+    Reference   : sandbox.mc.edu/~bennet/cs110/flt/ftod.html
+                  babbage.cs.qc.cuny.edu/IEEE-754.old/Decimal.html
+    Description : Handle floating point conversion.
 */
 
 #include <stdio.h>
@@ -72,7 +73,9 @@ float power(int x) {
 /* *** MAIN *** */
 int main(void) {
 
-    char  indata[4] = {163,53,128,0};
+    //char  indata[4] = {163,53,128,0};
+    //char  indata[4] = {67,7,0,0}; // 135
+    char  indata[4] = {66,92,0,0};  // 55
     char* p_binvalue;
     char  bin_data[32];
     char  exponent[8];
@@ -146,6 +149,7 @@ int main(void) {
 	}
      }
    
+    // remember to add 1, decimal value of significand
     printf("sum: %.10f\n",1+sum);
 
     free(p_binvalue);
