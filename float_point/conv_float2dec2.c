@@ -1,7 +1,7 @@
 /* 
     Auther      : Heinz Samuelsson
     Date        : 2013-11-30
-    File        : conv_float2dec.c
+    File        : conv_float2dec2.c
     Reference   : sandbox.mc.edu/~bennet/cs110/flt/ftod.html
                   babbage.cs.qc.cuny.edu/IEEE-754.old/Decimal.html
     Description : Handle floating point conversion.
@@ -11,6 +11,10 @@
 #include <stdlib.h>  // malloc and free function
 #include <string.h>  // strcpy function
 #include <math.h>
+
+#define IMPLICIT_BIT 1
+#define BIAS_ON      1
+#define BIAS_OFF     1
 
 // convert input decimal integer data to binary string
 char* decimal2binary(int n) {
@@ -40,18 +44,14 @@ char* decimal2binary(int n) {
 
 
 // convert binary string to decimal
-int bin2dec(char* data) {
+int bin2dec(int bias, char* data) {
 
     int decimal_data = (int)strtol(data,NULL,2);	
-    return (decimal_data - 127);
-}
 
-
-// convert binary string to decimal
-int bin2dec2(char* data) {
-
-    int decimal_data = (int)strtol(data,NULL,2);	
-    return decimal_data;
+    if (bias == 1) 
+        return (decimal_data - 127);
+    else
+        return decimal_data;
 }
 
 
@@ -125,7 +125,7 @@ int main(void) {
     exponent[8] = '\n';
 
     // convert the exponent
-    int x = bin2dec(exponent);
+    int x = bin2dec(BIAS_ON,exponent);
     printf("Exponent (dec): %d\n",x);
 
 
@@ -140,7 +140,7 @@ int main(void) {
     // make sure end of line is the last chararcter
     exponent[23] = '\n';
 
-    int y = bin2dec2(mantissa);
+    int y = bin2dec(BIAS_OFF,mantissa);
     printf("Mantissa (dec): %d\n",y);
 
     for (int i=0; i<23; i++) {
@@ -149,8 +149,8 @@ int main(void) {
 	}
      }
    
-    // remember to add 1, decimal value of significand
-    printf("sum: %.10f\n",1+sum);
+    // remember to add implicit leading bit
+    printf("sum: %.10f\n",IMPLICIT_BIT+sum);
 
     free(p_binvalue);
 
