@@ -5,6 +5,9 @@
     Reference   : sandbox.mc.edu/~bennet/cs110/flt/ftod.html
                   babbage.cs.qc.cuny.edu/IEEE-754.old/Decimal.html
     Description : Handle floating point conversion.
+
+            To calculate the decimal value the following is used:
+            value = (-1)^sign * (1.b22 b21 b20 ... b0) * 2^(exp-127)
 */
 
 #include <stdio.h>
@@ -12,9 +15,10 @@
 #include <string.h>  // strcpy function
 #include <math.h>
 
-#define IMPLICIT_BIT 1
-#define BIAS_ON      1
-#define BIAS_OFF     1
+#define IMPLICIT_BIT 1  // implicit bit
+#define BIAS_ON      1  // biased on, used to calculate exponent
+#define BIAS_OFF     1  // biased off, used to calculate mantissa
+
 
 // convert input decimal integer data to binary string
 char* decimal2binary(int n) {
@@ -70,12 +74,33 @@ float power(int x) {
 }
 
 
+// calculate 2^n
+float power_of_2(int n) {
+
+    int pow = 1;
+    int i   = 1;
+
+    while (i <= abs(n)) {
+        pow = pow * 2;
+	i++;
+    }
+
+    if (n > 0)
+        return pow;
+    else
+        return 1.0/pow;
+}
+
+
 /* *** MAIN *** */
 int main(void) {
 
-    //char  indata[4] = {163,53,128,0};
-    //char  indata[4] = {67,7,0,0}; // 135
-    char  indata[4] = {66,92,0,0};  // 55
+    //char  indata[4] = {67,7,0,0};    // 135 => 0x43070000
+    char  indata[4] = {62,32,0,0};   // 0.15625 => 0x3e200000
+    //char  indata[4] = {66,92,0,0};   // 55 => 0x425c0000
+    //char  indata[4] = {63,128,0,0};  // 1 => 0x3f800000
+    //char  indata[4] = {67,160,0,0};    // 320 => 0x43a00000
+
     char* p_binvalue;
     char  bin_data[32];
     char  exponent[8];
@@ -125,8 +150,8 @@ int main(void) {
     exponent[8] = '\n';
 
     // convert the exponent
-    int x = bin2dec(BIAS_ON,exponent);
-    printf("Exponent (dec): %d\n",x);
+    int dec_exponent = bin2dec(BIAS_ON,exponent);
+    printf("Exponent (dec): %d\n",dec_exponent);
 
 
     // find mantissa, 23 bits, and assign its variable
@@ -140,8 +165,8 @@ int main(void) {
     // make sure end of line is the last chararcter
     exponent[23] = '\n';
 
-    int y = bin2dec(BIAS_OFF,mantissa);
-    printf("Mantissa (dec): %d\n",y);
+    int dec_mantissa = bin2dec(BIAS_OFF,mantissa);
+    printf("Mantissa (dec): %d\n",dec_mantissa);
 
     for (int i=0; i<23; i++) {
         if (mantissa[i] == '1') {
@@ -151,6 +176,14 @@ int main(void) {
    
     // remember to add implicit leading bit
     printf("sum: %.10f\n",IMPLICIT_BIT+sum);
+
+    float x = power_of_2(dec_exponent);
+    printf("x: %f\n",x);    
+
+    printf("------------------------------\n");
+    float result = (IMPLICIT_BIT+sum) * x;
+    printf("Result: %f\n",result);
+    printf("------------------------------\n");
 
     free(p_binvalue);
 
