@@ -96,16 +96,19 @@ float power_of_2(int n) {
 int main(void) {
 
     //char  indata[4] = {67,7,0,0};    // 135 => 0x43070000
-    char  indata[4] = {62,32,0,0};   // 0.15625 => 0x3e200000
+    //char  indata[4] = {62,32,0,0};   // 0.15625 => 0x3e200000
     //char  indata[4] = {66,92,0,0};   // 55 => 0x425c0000
     //char  indata[4] = {63,128,0,0};  // 1 => 0x3f800000
-    //char  indata[4] = {67,160,0,0};    // 320 => 0x43a00000
+    //char  indata[4] = {67,160,0,0};  // 320 => 0x43a00000
+    //char  indata[4] = {195,47,0,0};  // -175 => 0xc32f0000
+    char  indata[4] = {193,58,225,72};  // -11.68 => 0xc13ae148
 
     char* p_binvalue;
     char  bin_data[32];
     char  exponent[8];
     char  mantissa[23];
     float sum;
+    int   sign;
 
     // convert decimal to binary
     for (int i=0; i<4; i++) {
@@ -132,10 +135,12 @@ int main(void) {
     if (*(bin_data) == '1') {
         printf("msb: %c -> ",*(bin_data));
         printf("Negative number\n");
+	sign = -1;
     }
     else {
         printf("msb: %c -> ",*(bin_data));
         printf("Positive number\n");
+	sign = 1;
     }
 
     // find exponent, 8 bits, and assign its variable
@@ -181,7 +186,7 @@ int main(void) {
     printf("x: %f\n",x);    
 
     printf("------------------------------\n");
-    float result = (IMPLICIT_BIT+sum) * x;
+    float result = sign*(IMPLICIT_BIT+sum) * x;
     printf("Result: %f\n",result);
     printf("------------------------------\n");
 
