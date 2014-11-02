@@ -1,16 +1,26 @@
-/*
-      value = (-1)^sign * (1.b22 b21 b20 ... b0) * 2^(exp-127)
-      IEEE 754 single-precision binary floating-point format: binary32
-      http://en.wikipedia.org/wiki/Single-precision_floating-point_format
+/* 
+    Auther      : Heinz Samuelsson
+    Date        : 2014-11-02
+    File        : conv_float2dec.c
+    Reference   : http://en.wikipedia.org/wiki/Single-precision_floating-point_format
+    Description : Convert IEEE 754 single-precision binary floating-point 
+                  format: binary32 to decimal value.
+
+                  To check floating point number see:
+                    http://babbage.cs.qc.cuny.edu/IEEE-754.old/Decimal.html
+
+                  value = (-1)^sign * (1.b22 b21 b20 ... b0) * 2^(exp-127)
 */
+
 #include <stdio.h>
 #include <stdlib.h>  // malloc and free function
 #include <string.h>  // strcpy function
 #include <math.h>
 
-#define BIAS_ON      1  // biased on, used to calculate exponent
 #define IMPLICIT_BIT 1  // implicit bit
 
+
+// struct holding the floating point format number
 typedef struct {
     char  value32bit[32]; // all 32 bits of the floating point number
     int   sign;           // 1 bit, +1 or -1
@@ -18,8 +28,10 @@ typedef struct {
     char  mantissa[24];   // mantissa, 24 bits
 } FloatPointNumber;
 
-// global declaration
+
+// global declaration used by all functions
 static FloatPointNumber fpNumber;
+
 
 // convert input decimal integer data to binary string
 char* decimal2binary(int n) {
@@ -111,7 +123,7 @@ void get_mantissa(char* indata) {
 }
 
 
-// convert binary string to decimal
+// convert the exponent to decimal number
 int bin2dec(char* indata) {
 
     char chardata[8];
@@ -122,7 +134,7 @@ int bin2dec(char* indata) {
 }
 
 
-// convert
+// convert the mantissa to decimal number
 int bin2dec2(char* indata) {
 
     char chardata[24];
